@@ -9,10 +9,12 @@
 4. Input your anthropic api key and the correct python path in the Maestro plugin settings.
 
 	![Screenshot 2024-03-22 at 3 42 28 AM](https://github.com/joshuakto/obsidian-maestro/assets/34743132/5fabf76f-432e-4733-8e0f-987a1a071dad)
+5. Copy [maestro.py](https://raw.githubusercontent.com/joshuakto/obsidian-maestro/main/maestro.py) to the base of the vault
 6. Click the robot icon to give Maestro an objective
 
    <img width="321" alt="Screenshot 2024-03-22 at 3 36 03 AM" src="https://github.com/joshuakto/obsidian-maestro/assets/34743132/4bab7a63-f642-46c2-a0f8-f74908b001a6">
 
+### **Note**: This plugin is in early alpha, please backup your vault before using it.
 
 This Python script demonstrates an AI-assisted task breakdown and execution workflow using the Anthropic API. It utilizes two AI models, Opus and Haiku, to break down an objective into sub-tasks, execute each sub-task, and refine the results into a cohesive final output.
 
