@@ -31,11 +31,13 @@ def opus_orchestrator(objective, previous_results=None):
                 "content": [
                     {"type": "text", "text": f"Based on the following objective and the previous sub-task results (if any), please break down the objective into the next sub-task, and create a concise and detailed prompt for a subagent so it can execute that task, please assess if the objective has been fully achieved. If the previous sub-task results comprehensively address all aspects of the objective, include the phrase 'The task is complete:' at the beginning of your response. If the objective is not yet fully achieved, break it down into the next sub-task and create a concise and detailed prompt for a subagent to execute that task.:\n\nObjective: {objective}\n\nPrevious sub-task results:\n{previous_results_text}"}
                 ]
-            }
+            },
         ]
 
         opus_response = client.messages.create(
             model="claude-3-opus-20240229",
+            # added to prevent wasting tokens by going in loop about whether task is complete
+            system="If the task does not seems like an objective, discontinue the conversation by saying 'The task is complete:' mentioning that the input does not seems like an objective.",
             max_tokens=2048,
             messages=messages
         )

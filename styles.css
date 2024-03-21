@@ -1,0 +1,41 @@
+.maestro-modal h2 {
+    text-align: center;
+  }
+  
+  .maestro-modal textarea,
+  .maestro-modal button,
+  .maestro-modal {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 560px;
+    width: fit-content;
+    justify-content: center;
+  }
+
+  .maestro-banner {
+    display: block;
+    background-image: url("https://camo.githubusercontent.com/4f2ebfe15f47a67d4406933422d15964655d1ff25b192322fb5094bf7e61775a/68747470733a2f2f6d656469612e646973636f72646170702e6e65742f6174746163686d656e74732f313034373030363730383831333237313130302f313231393737363530383836343839333038382f44414c4c455f4d61725f31395f4c616e6473636170655f526f626f745f4d61657374726f5f312e776562703f65783d36363063383836362669733d363566613133363626686d3d63343937333663373534376138316533666135616536336564303939613632343936623262626336343839636332333831653838333366383135643361613937263d26666f726d61743d776562702677696474683d33323230266865696768743d31383430");
+    background-repeat: no-repeat;
+    background-size: auto 200px;
+    width: 300px;
+    border-radius: 20px;
+    height: 200px;
+  }
+  
+  .maestro-modal {
+    overflow-y: auto;
+    align-items: center;
+    row-gap: 4px;
+    white-space: pre-wrap; /* Ensures that text wraps */
+    justify-content: center;
+  }
+
+  .maestro-output {
+    display: block;
+    background-color: aliceblue;
+    padding: 8px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+  }
