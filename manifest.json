@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-maestro",
 	"name": "Maestro",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "Use Maestro in Obsidian",
 	"author": "Obsidian",
