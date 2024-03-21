@@ -4,17 +4,27 @@ import re
 from rich.console import Console
 from rich.panel import Panel
 from datetime import datetime
+import argparse
 
+
+parser = argparse.ArgumentParser(description='Call maestro with objective.')
+parser.add_argument('objective', type=str, help='Objective')
+parser.add_argument('api_key', type=str, help='anthropic api key')
+
+objective = parser.parse_args().objective
+API_KEY = parser.parse_args().api_key
 # Set up the Anthropic API client
-client = Anthropic(api_key="")
+client = Anthropic(api_key=API_KEY)
 
 # Initialize the Rich Console
 console = Console()
 
+
 def opus_orchestrator(objective, previous_results=None):
     try:
         console.print(f"\n[bold]Calling Opus for your objective[/bold]")
-        previous_results_text = "\n".join(previous_results) if previous_results else "None"
+        previous_results_text = "\n".join(
+            previous_results) if previous_results else "None"
         messages = [
             {
                 "role": "user",
@@ -31,18 +41,22 @@ def opus_orchestrator(objective, previous_results=None):
         )
 
         response_text = opus_response.content[0].text
-        console.print(Panel(response_text, title=f"[bold green]Opus Orchestrator[/bold green]", title_align="left", border_style="green", subtitle="Sending task to Haiku 👇"))
+        console.print(Panel(response_text, title=f"[bold green]Opus Orchestrator[/bold green]",
+                      title_align="left", border_style="green", subtitle="Sending task to Haiku 👇"))
         return response_text
     except Exception as e:
-        console.print(f"[bold red]Error in opus_orchestrator:[/bold red] {str(e)}")
+        console.print(
+            f"[bold red]Error in opus_orchestrator:[/bold red] {str(e)}")
         return None
+
 
 def haiku_sub_agent(prompt, previous_haiku_tasks=None):
     try:
         if previous_haiku_tasks is None:
             previous_haiku_tasks = []
 
-        system_message = "Previous Haiku tasks:\n" + "\n".join(previous_haiku_tasks)
+        system_message = "Previous Haiku tasks:\n" + \
+            "\n".join(previous_haiku_tasks)
 
         messages = [
             {
@@ -61,11 +75,14 @@ def haiku_sub_agent(prompt, previous_haiku_tasks=None):
         )
 
         response_text = haiku_response.content[0].text
-        console.print(Panel(response_text, title="[bold blue]Haiku Sub-agent Result[/bold blue]", title_align="left", border_style="blue", subtitle="Task completed, sending result to Opus 👇"))
+        console.print(Panel(response_text, title="[bold blue]Haiku Sub-agent Result[/bold blue]",
+                      title_align="left", border_style="blue", subtitle="Task completed, sending result to Opus 👇"))
         return response_text
     except Exception as e:
-        console.print(f"[bold red]Error in haiku_sub_agent:[/bold red] {str(e)}")
+        console.print(
+            f"[bold red]Error in haiku_sub_agent:[/bold red] {str(e)}")
         return None
+
 
 def opus_refine(objective, sub_task_results):
     try:
@@ -74,7 +91,8 @@ def opus_refine(objective, sub_task_results):
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": f"Objective: {objective}\n\nSub-task results:\n" + "\n".join(sub_task_results) + "\n\nPlease review and refine the sub-task results into a cohesive final output. add any missing information or details as needed. When working on code projects make sure to include the code implementation by file."}
+                    {"type": "text", "text": f"Objective: {objective}\n\nSub-task results:\n" + "\n".join(
+                        sub_task_results) + "\n\nPlease review and refine the sub-task results into a cohesive final output. add any missing information or details as needed. When working on code projects make sure to include the code implementation by file."}
                 ]
             }
         ]
@@ -86,11 +104,13 @@ def opus_refine(objective, sub_task_results):
         )
 
         response_text = opus_response.content[0].text
-        console.print(Panel(response_text, title="[bold green]Final Output[/bold green]", title_align="left", border_style="green"))
+        console.print(Panel(
+            response_text, title="[bold green]Final Output[/bold green]", title_align="left", border_style="green"))
         return response_text
     except Exception as e:
         console.print(f"[bold red]Error in opus_refine:[/bold red] {str(e)}")
         return None
+
 
 def read_file(file_path):
     try:
@@ -104,8 +124,10 @@ def read_file(file_path):
         console.print(f"[bold red]Error reading file:[/bold red] {str(e)}")
         return None
 
+
 # Get the objective from user input
-objective = input("Please enter your objective with or without a text file path: ")
+# objective = input(
+#     "Please enter your objective with or without a text file path: ")
 
 # Check if the input contains a file path
 if "./" in objective or "/" in objective:
@@ -119,7 +141,8 @@ if "./" in objective or "/" in objective:
             # Update the objective string to include the instruction and file content
             objective = f"{objective}\n\nFile content:\n{file_content}"
     else:
-        console.print("[bold red]Invalid file path in the objective.[/bold red]")
+        console.print(
+            "[bold red]Invalid file path in the objective.[/bold red]")
 else:
     objective = objective
 
@@ -143,14 +166,17 @@ while True:
         sub_task_result = haiku_sub_agent(sub_task_prompt, haiku_tasks)
         if sub_task_result is None:
             break
-        haiku_tasks.append(f"Task: {sub_task_prompt}\nResult: {sub_task_result}")
+        haiku_tasks.append(
+            f"Task: {sub_task_prompt}\nResult: {sub_task_result}")
         task_exchanges.append((sub_task_prompt, sub_task_result))
 
 # Call Opus to review and refine the sub-task results
-refined_output = opus_refine(objective, [result for _, result in task_exchanges])
+refined_output = opus_refine(
+    objective, [result for _, result in task_exchanges])
 
 if refined_output is None:
-    console.print("[bold red]Failed to generate the refined final output.[/bold red]")
+    console.print(
+        "[bold red]Failed to generate the refined final output.[/bold red]")
 else:
     # Prepare the full exchange log
     exchange_log = f"Objective: {objective}\n\n"
@@ -170,7 +196,8 @@ else:
     timestamp = datetime.now().strftime("%a_%H-%M")
     # Guard against filename too long OS errors by conditionally combining unique hash as prefix
     if sanitized_objective:
-        filename = f"{timestamp}_{sanitized_objective[:50]}.md" if len(sanitized_objective) > 50 else f"{timestamp}_{sanitized_objective}.md"
+        filename = f"{timestamp}_{sanitized_objective[:50]}.md" if len(
+            sanitized_objective) > 50 else f"{timestamp}_{sanitized_objective}.md"
     else:
         filename = f"{timestamp}_output.md"
 
@@ -179,4 +206,5 @@ else:
             file.write(exchange_log)
         print(f"\nFull exchange log saved to {filename}")
     except IOError as e:
-        console.print(f"[bold red]Error writing exchange log to file:[/bold red] {str(e)}")
+        console.print(
+            f"[bold red]Error writing exchange log to file:[/bold red] {str(e)}")
