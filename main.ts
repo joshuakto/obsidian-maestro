@@ -116,7 +116,7 @@ export default class MaestroPlugin extends Plugin {
 
   async onload() {
     await this.loadSettings();
-    this.addRibbonIcon('dice', 'Open Objective Generator', () => {
+    this.addRibbonIcon('bot', 'Open Objective Generator', () => {
       new ObjectiveModal(this.app, this).open();
     });
     this.addSettingTab(new MaestroSettingTab(this.app, this));
