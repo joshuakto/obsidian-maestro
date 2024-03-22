@@ -1,5 +1,6 @@
 # Obsidian Maestro -- use [Maestro](https://github.com/Doriandarko/maestro) from Obsidian
-![hero](https://media.discordapp.net/attachments/1047006708813271100/1219776508864893088/DALLE_Mar_19_Landscape_Robot_Maestro_1.webp?ex=660c8866&is=65fa1366&hm=c49736c7547a81e3fa5ae63ed099a62496b2bbc6489cc2381e8833f815d3aa97&=&format=webp&width=3220&height=1840)
+![obsidian-maestro](https://github.com/joshuakto/obsidian-maestro/assets/34743132/80e57e61-cf2a-4182-b35d-98f8d3a24789)
+
 
 # Installation step
 1. Install [BRAT](https://obsidian.md/plugins?id=obsidian42-brat) plugin (since this repo is not on Obsidian store yet, you need to use the beta testing tool to install it. Alternatively, refers to the [Obsidian developer docs](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin) to see how to directly install in your device and skip step 2)
